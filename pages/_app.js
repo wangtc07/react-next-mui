@@ -5,6 +5,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Header from '../components/Header';
 import '../styles/global.css';
+import URLs from '../urls'; // 引入 URLs 配置
 
 const theme = createTheme();
 

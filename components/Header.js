@@ -2,6 +2,7 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { AppBar, Toolbar, Typography, Button } from '@mui/material';
+import URLs from '../urls'; // 引入 URLs 配置
 
 const Header = () => {
   return (
@@ -11,12 +12,12 @@ const Header = () => {
           My Next.js App
         </Typography>
         <Button color="inherit">
-          <Link href="/" passHref>
+          <Link href={URLs.home} passHref>
             Home
           </Link>
         </Button>
         <Button color="inherit">
-          <Link href="/about" passHref>
+          <Link href={URLs.about} passHref>
             About
           </Link>
         </Button>

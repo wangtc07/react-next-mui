@@ -1,6 +1,8 @@
 // pages/index.js
 import * as React from 'react';
 import { Container, Typography, Button } from '@mui/material';
+import Link from 'next/link';
+import URLs from '../urls'; // 引入 URLs 配置
 
 export default function Home() {
   return (
@@ -9,7 +11,9 @@ export default function Home() {
         Welcome to My Next.js App with MUI
       </Typography>
       <Button variant="contained" color="primary">
-        Hello World
+        <Link href={URLs.about} passHref>
+          About Page
+        </Link>
       </Button>
     </Container>
   );
