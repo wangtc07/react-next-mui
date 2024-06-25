@@ -21,6 +21,11 @@ const Header = () => {
             About
           </Link>
         </Button>
+        <Button color="inherit">
+          <Link href={URLs.members} passHref>
+            Members
+          </Link>
+        </Button>
       </Toolbar>
     </AppBar>
   );
