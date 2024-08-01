@@ -1,12 +1,25 @@
 // pages/members.js
-import * as React from 'react';
-import { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
-import { Container, TextField, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
-import URLs from '../urls'; // 引入 URLs 配置
+import * as React from "react";
+import { useState, useEffect, useRef } from "react";
+import axios from "axios";
+import { Authenticator } from "@aws-amplify/ui-react";
+import {
+  Container,
+  TextField,
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@mui/material";
 
 const fetchMembers = async (page) => {
-  const response = await axios.get(`https://jsonplaceholder.typicode.com/todos?_page=${page}&_limit=20`);
+  const response = await axios.get(
+    `https://jsonplaceholder.typicode.com/todos?_page=${page}&_limit=20`
+  );
   return response.data;
 };
 
@@ -14,8 +27,8 @@ const Members = () => {
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const [memberId, setMemberId] = useState('');
-  const [memberName, setMemberName] = useState('');
+  const [memberId, setMemberId] = useState("");
+  const [memberName, setMemberName] = useState("");
   const tableContainerRef = useRef(null);
 
   useEffect(() => {
@@ -42,8 +55,8 @@ const Members = () => {
   useEffect(() => {
     const container = tableContainerRef.current;
     if (container) {
-      container.addEventListener('scroll', handleScroll);
-      return () => container.removeEventListener('scroll', handleScroll);
+      container.addEventListener("scroll", handleScroll);
+      return () => container.removeEventListener("scroll", handleScroll);
     }
   }, [members, loading]);
 
@@ -52,45 +65,62 @@ const Members = () => {
   };
 
   return (
-    <Container>
-      <h1>查詢會員</h1>
-      <TextField
-        label="會員ID"
-        variant="outlined"
-        value={memberId}
-        onChange={(e) => setMemberId(e.target.value)}
-        style={{ marginRight: '1rem' }}
-      />
-      <TextField
-        label="會員名"
-        variant="outlined"
-        value={memberName}
-        onChange={(e) => setMemberName(e.target.value)}
-        style={{ marginRight: '1rem' }}
-      />
-      <Button variant="contained" color="primary" onClick={handleSearch}>
-        查詢
-      </Button>
-      <TableContainer component={Paper} style={{ marginTop: '2rem', maxHeight: '400px', overflow: 'auto' }} ref={tableContainerRef}>
-        <Table stickyHeader>
-          <TableHead>
-            <TableRow>
-              <TableCell>會員ID</TableCell>
-              <TableCell>Title</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {members.map((member) => (
-              <TableRow key={member.id}>
-                <TableCell>{member.id}</TableCell>
-                <TableCell>{member.title}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      {loading && <p>加載中...</p>}
-    </Container>
+    <Authenticator>
+      {({ signOut, user }) =>
+        user ? (
+          <Container>
+            <h1>查詢會員</h1>
+            <TextField
+              label="會員ID"
+              variant="outlined"
+              value={memberId}
+              onChange={(e) => setMemberId(e.target.value)}
+              style={{ marginRight: "1rem" }}
+            />
+            <TextField
+              label="會員名"
+              variant="outlined"
+              value={memberName}
+              onChange={(e) => setMemberName(e.target.value)}
+              style={{ marginRight: "1rem" }}
+            />
+            <Button variant="contained" color="primary" onClick={handleSearch}>
+              查詢
+            </Button>
+            <TableContainer
+              component={Paper}
+              style={{
+                marginTop: "2rem",
+                maxHeight: "400px",
+                overflow: "auto",
+              }}
+              ref={tableContainerRef}
+            >
+              <Table stickyHeader>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>會員ID</TableCell>
+                    <TableCell>Title</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {members.map((member) => (
+                    <TableRow key={member.id}>
+                      <TableCell>{member.id}</TableCell>
+                      <TableCell>{member.title}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            {loading && <p>加載中...</p>}
+            <Button variant="contained" color="secondary" onClick={signOut}>
+              Sign Out
+            </Button>
+          </Container>
+        ) : null
+      }
+    </Authenticator>
   );
 };
 
