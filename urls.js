@@ -3,7 +3,8 @@ const URLs = {
     home: '/',
     about: '/about',
     contact: '/contact',
-    members: '/members'
+    members: '/members',
+    todo: '/todo'
   };
   
   export default URLs;
